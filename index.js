@@ -1,3 +1,4 @@
+// index.js
 const { program } = require("commander");
 const {
   listContacts,
@@ -20,24 +21,18 @@ const argv = program.opts();
 async function invokeAction({ action, id, name, email, phone }) {
   switch (action) {
     case "list":
-      console.table(await listContacts());
-      break;
-
+      return listContacts();
     case "get":
-      console.log(await getContactById(id));
-      break;
-
+      return getContactById(id);
     case "add":
-      console.log(await addContact(name, email, phone));
-      break;
-
+      return addContact(name, email, phone);
     case "remove":
-      console.log(await removeContact(id));
-      break;
-
+      return removeContact(id);
     default:
-      console.warn("\x1B[31m Unknown action type!");
+      return null;
   }
 }
 
-invokeAction(argv);
+invokeAction(argv).then((result) => {
+  console.log(result);
+});
